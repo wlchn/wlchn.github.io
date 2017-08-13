@@ -8,6 +8,7 @@ WANG LEI, Software Engineer at ClassBox, living in Beijing.
 Email: i@wanglei.io  
 
 Site: [wanglei.io](http://wanglei.io)  
+Site: <a href="http://wanglei.io" target="_blank">wanglei.io</a>
 
 GitHub: [github.com/wlchn](http://github.com/wlchn)  
 
