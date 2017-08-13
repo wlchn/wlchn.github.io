@@ -1,4 +1,4 @@
 wlchn.github.io
 ===============
 
-Alan's blog
+Personal page on Github Pages.
