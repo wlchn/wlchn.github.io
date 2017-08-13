@@ -1,7 +1,7 @@
-title: Alan's blog
-description: wlchn.github.io
+title: Alan Wang
+description: wanglei.io
 google_analytics: 
-show_downloads: true
+show_downloads: false
 theme: jekyll-theme-hacker
 
 gems:
