@@ -5,12 +5,10 @@ WANG LEI, Software Engineer at ClassBox, living in Beijing.
 
 ## Social
 
-Email: i@wanglei.io  
+Email: <a href="mailto:i@wanglei.io">i@wanglei.io</a>  
 
-Site: [wanglei.io](http://wanglei.io)  
-Site: <a href="http://wanglei.io" target="_blank">wanglei.io</a>
+Site: <a href="http://wanglei.io" target="_blank">wanglei.io</a>  
 
-GitHub: [github.com/wlchn](http://github.com/wlchn)  
+GitHub: <a href="github.com/wlchn" target="_blank">github.com/wlchn</a>  
 
-LinkedIn: [linkedin.com/in/wlchn](http://linkedin.com/in/wlchn)  
-
+LinkedIn: <a href="linkedin.com/in/wlchn" target="_blank">linkedin.com/in/wlchn</a>  
