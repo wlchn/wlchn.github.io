@@ -1,4 +1,4 @@
-wanglei.io
+Alan Wang
 ===============
 
-Alan Wang ( WANG LEI ), a Software Engineer at ClassBox, living in Beijing.
+WANG LEI, Software Engineer at ClassBox, living in Beijing.
