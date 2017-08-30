@@ -1,7 +1,7 @@
 Alan Wang
 ===============
 
-WANG LEI, Software Engineer at ClassBox, living in Beijing.
+WANG LEI, Software Engineer at <a href="http://kechenggezi.com" target="_blank">ClassBox</a>, living in Beijing.
 
 ## Social
 
