@@ -7,7 +7,7 @@ Hi, I'm WANG LEI, Software Engineer at <a href="http://kechenggezi.com" target="
 
 Site: <a href="http://wanglei.io" target="_blank">wanglei.io</a>  
 
-Email: <a href="mailto:i@wanglei.io">i@wanglei.io</a>  
+Email: <a href="mailto:geekwanglei@gmail.com">geekwanglei@gmail.com</a>  
 
 Blog: <a href="http://blog.csdn.net/wlchn" target="_blank">blog.csdn.net/wlchn</a>
 
