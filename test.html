@@ -25,11 +25,10 @@ window.addEventListener('message', function(event) {
         let walletsToSave;
       
         const localWallets = localStorage.getItem("wallets");
-        if (localWallets === null) {
-          walletsToSave = legacyWallets;
-        } else {
-            try {
-                console.log("try")
+        try {
+            if (localWallets === null) {
+                walletsToSave = legacyWallets;
+            } else {
                 legacyWalletsList = JSON.parse(legacyWallets);
                 localWalletsList = JSON.parse(localWallets);
 
@@ -53,9 +52,9 @@ window.addEventListener('message', function(event) {
             
                 localStorage.setItem("wallets", walletsToSave);
                 localStorage.setItem("legacyMigrated", '1');
-            } catch (e) {
-                console.log('legacy wallets migrate err:', e);
             }
+        } catch (e) {
+            console.log('legacy wallets migrate err:', e);
         }
     }
 }, false);
