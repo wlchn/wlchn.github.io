@@ -15,10 +15,10 @@
   <meta property="og:url" content="http://wanglei.me/">
   <meta property="og:site_name" content="wanglei.me">
 <script type="text/javascript">  
- window.addEventListener('message', function(event) {
+window.addEventListener('message', function(event) {
     if (event.origin === 'https://ddex.io') {
-        const legacywWallets = event.data.wallets;
-        if (legacywWallets === null) {
+        const legacyWallets = event.data.wallets;
+        if (legacyWallets === null) {
           return;
         }
       
@@ -26,10 +26,10 @@
       
         const localWallets = localStorage.getItem("wallets");
         if (localWallets === null) {
-          walletsToSave = wallets;
+          walletsToSave = legacyWallets;
         } else {
-          legacyWalletsList = JSON.parse(legacywWallets);
-          localWalletsList = JSON.parse(legacywWallets);
+          legacyWalletsList = JSON.parse(legacyWallets);
+          localWalletsList = JSON.parse(localWallets);
 
           let walletsListToAdd = [];
           for(let legacyWallet of legacyWalletsList) {
