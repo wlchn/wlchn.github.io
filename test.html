@@ -15,18 +15,22 @@
   <meta property="og:url" content="http://wanglei.me/">
   <meta property="og:site_name" content="wanglei.me">
 <script type="text/javascript">  
-    window.addEventListener('message', function(event) {
-        console.log('---test---', event);
-        if (event.origin !== 'https://wanglei.me') {
-            localStorage.setItem("name", "wanglei-test");
-            const name = localStorage.getItem("name");
-            event.source.postMessage("returnData---" + name, event.origin);
-        }
-    }, false);
+ window.addEventListener('message', function(event) {
+    if (event.origin === 'https://ddex.io') {
+        console.log('---return test---', event);
+    }
+}, false);
+
+window.onload = function() {  
+    const ddexioframe = document.getElementById('ddexioframe')
+    wanglei.contentWindow.postMessage('message', 'https://ddex.io')
+} 
 </script>
 </head>
 
 <body>
+  <iframe id="ddexioframe" src="https://ddex.io/legacymigrate" style="display:none;"></iframe>
+
   <header>
     <div class="container">
       <h1>wanglei.me/test.html</h1>
