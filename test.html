@@ -14,56 +14,6 @@
   <link rel="canonical" href="http://wanglei.me/">
   <meta property="og:url" content="http://wanglei.me/">
   <meta property="og:site_name" content="wanglei.me">
-<script type="text/javascript">  
-window.addEventListener('message', function(event) {
-    if (event.origin === 'https://ddex.io') {
-        const legacyWallets = event.data.wallets;
-        if (legacyWallets === null) {
-          return;
-        }
-      
-        let walletsToSave;
-      
-        const localWallets = localStorage.getItem("wallets");
-        try {
-            if (localWallets === null) {
-                walletsToSave = legacyWallets;
-            } else {
-                legacyWalletsList = JSON.parse(legacyWallets);
-                localWalletsList = JSON.parse(localWallets);
-
-                let walletsListToAdd = [];
-                for(let legacyWallet of legacyWalletsList) {
-                    let inLocal = false;
-                    for(let localWallet of localWalletsList) {
-                        if (JSON.parse(legacyWallet).address === JSON.parse(localWallet).address) {
-                            inLocal = true;
-                        }
-                    }
-                    if (!inLocal) {
-                        walletsListToAdd.push(legacyWallet);
-                    }
-                }
-
-                for(let walletToAdd of walletsListToAdd) {
-                    localWalletsList.push(walletToAdd);
-                }
-                walletsToSave = JSON.stringify(localWalletsList);
-            }
-            localStorage.setItem("wallets", walletsToSave);
-            localStorage.setItem("legacyMigrated", '1');
-        } catch (e) {
-            console.log('legacy wallets migrate err:', e);
-        }
-    }
-}, false);
-window.onload = function() {  
-    if (localStorage.getItem('legacyMigrated') === null) {
-      const ddexioframe = document.getElementById('ddexioframe');
-      ddexioframe.contentWindow.postMessage('message', 'https://ddex.io');
-    }
-} 
-</script>
 </head>
 
 <body>
