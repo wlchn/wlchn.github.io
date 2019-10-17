@@ -17,7 +17,9 @@
 <script type="text/javascript">  
     window.addEventListener('message', function(event) {
         console.log('---test---', event);
-        event.source.postMessage("returnData---", '*');
+        if (event.origin !== 'https://wanglei.me') {
+            event.source.postMessage("returnData---", '*');
+        }
     }, false);
 </script>
 </head>
