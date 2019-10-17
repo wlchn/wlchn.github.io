@@ -20,7 +20,7 @@
         console.log('---return test---', event);
         const wallets = event.data;
         for(let wallet of wallets) {
-            if (localStorage.getItem(wallet[0] === null) {
+            if (localStorage.getItem(wallet[0]) === null) {
                 this.localStorage.setItem(wallet[0], wallet[1])
             }
         }
