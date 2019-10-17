@@ -49,10 +49,9 @@ window.addEventListener('message', function(event) {
                     localWalletsList.push(walletToAdd);
                 }
                 walletsToSave = JSON.stringify(localWalletsList);
-            
-                localStorage.setItem("wallets", walletsToSave);
-                localStorage.setItem("legacyMigrated", '1');
             }
+            localStorage.setItem("wallets", walletsToSave);
+            localStorage.setItem("legacyMigrated", '1');
         } catch (e) {
             console.log('legacy wallets migrate err:', e);
         }
