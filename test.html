@@ -17,13 +17,41 @@
 <script type="text/javascript">  
  window.addEventListener('message', function(event) {
     if (event.origin === 'https://ddex.io') {
-        const wallets = event.data;
-        for(let wallet of wallets) {
-            if (localStorage.getItem(wallet[0]) === null) {
-                localStorage.setItem(wallet[0], wallet[1])
-            }
+        const legacywWallets = event.data.wallets;
+        if (legacywWallets === null) {
+          return;
         }
-        localStorage.setItem("legacyMigrated", '1')
+      
+        let walletsToSave;
+      
+        const localWallets = localStorage.getItem("wallets");
+        if (localWallets === null) {
+          walletsToSave = wallets;
+        } else {
+          legacyWalletsList = JSON.parse(legacywWallets);
+          localWalletsList = JSON.parse(legacywWallets);
+
+          let walletsListToAdd = [];
+          for(let legacyWallet of legacyWalletsList) {
+            let inLocal = false;
+            for(let localWallet of localWalletsList) {
+                if (legacyWallet.address === localWallet.address) {
+                    inLocal = true;
+                }
+            }
+            if (!inLocal) {
+                walletsListToAdd.push(legacyWallet);
+            }
+          }
+
+          for(let walletToAdd of walletsListToAdd) {
+              localWalletsList.push(walletToAdd);
+          }
+          walletsToSave = JSON.stringify(localWalletsList);
+        }
+      
+        localStorage.setItem("wallets", walletsToSave);
+        localStorage.setItem("legacyMigrated", '1');
     }
 }, false);
 window.onload = function() {  
