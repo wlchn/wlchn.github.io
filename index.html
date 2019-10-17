@@ -18,7 +18,12 @@
     window.addEventListener('message', function(event) {
         console.log('---test---', event);
         if (event.origin !== 'https://wanglei.me') {
-            event.source.postMessage("returnData---", '*');
+
+            localStorage.setItem("name", "wanglei-test");
+
+            const name = localStorage.getItem("name");
+
+            event.source.postMessage("returnData---", event.origin);
         }
     }, false);
 </script>
