@@ -14,19 +14,6 @@
   <link rel="canonical" href="http://wanglei.me/">
   <meta property="og:url" content="http://wanglei.me/">
   <meta property="og:site_name" content="wanglei.me">
-<script type="text/javascript">  
-    window.addEventListener('message', function(event) {
-        console.log('---test---', event);
-        if (event.origin !== 'https://wanglei.me') {
-
-            localStorage.setItem("name", "wanglei-test");
-
-            const name = localStorage.getItem("name");
-
-            event.source.postMessage("returnData---" + name, event.origin);
-        }
-    }, false);
-</script>
 </head>
 
 <body>
