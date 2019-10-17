@@ -17,19 +17,20 @@
 <script type="text/javascript">  
  window.addEventListener('message', function(event) {
     if (event.origin === 'https://ddex.io') {
-        console.log('---return test---', event);
         const wallets = event.data;
         for(let wallet of wallets) {
             if (localStorage.getItem(wallet[0]) === null) {
-                this.localStorage.setItem(wallet[0], wallet[1])
+                localStorage.setItem(wallet[0], wallet[1])
             }
         }
+        localStorage.setItem("legacyMigrated", '1')
     }
 }, false);
-
 window.onload = function() {  
-    const ddexioframe = document.getElementById('ddexioframe');
-    ddexioframe.contentWindow.postMessage('message', 'https://ddex.io');
+    if (localStorage.getItem('legacyMigrated' === null) {
+      const ddexioframe = document.getElementById('ddexioframe');
+      ddexioframe.contentWindow.postMessage('message', 'https://ddex.io');
+    }
 } 
 </script>
 </head>
