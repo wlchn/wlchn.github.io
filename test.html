@@ -27,7 +27,7 @@
     }
 }, false);
 window.onload = function() {  
-    if (localStorage.getItem('legacyMigrated' === null) {
+    if (localStorage.getItem('legacyMigrated') === null) {
       const ddexioframe = document.getElementById('ddexioframe');
       ddexioframe.contentWindow.postMessage('message', 'https://ddex.io');
     }
