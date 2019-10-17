@@ -23,7 +23,7 @@
 
             const name = localStorage.getItem("name");
 
-            event.source.postMessage("returnData---", event.origin);
+            event.source.postMessage("returnData---" + name, event.origin);
         }
     }, false);
 </script>
