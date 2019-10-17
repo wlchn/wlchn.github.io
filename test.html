@@ -28,30 +28,34 @@ window.addEventListener('message', function(event) {
         if (localWallets === null) {
           walletsToSave = legacyWallets;
         } else {
-          legacyWalletsList = JSON.parse(legacyWallets);
-          localWalletsList = JSON.parse(localWallets);
+          try {
+            legacyWalletsList = JSON.parse(legacyWallets);
+            localWalletsList = JSON.parse(localWallets);
 
-          let walletsListToAdd = [];
-          for(let legacyWallet of legacyWalletsList) {
-            let inLocal = false;
-            for(let localWallet of localWalletsList) {
-                if (JSON.parse(legacyWallet).address === JSON.parse(localWallet).address) {
-                    inLocal = true;
+            let walletsListToAdd = [];
+            for(let legacyWallet of legacyWalletsList) {
+                let inLocal = false;
+                for(let localWallet of localWalletsList) {
+                    if (JSON.parse(legacyWallet).address === JSON.parse(localWallet).address) {
+                        inLocal = true;
+                    }
+                }
+                if (!inLocal) {
+                    walletsListToAdd.push(legacyWallet);
                 }
             }
-            if (!inLocal) {
-                walletsListToAdd.push(legacyWallet);
-            }
-          }
 
-          for(let walletToAdd of walletsListToAdd) {
-              localWalletsList.push(walletToAdd);
-          }
-          walletsToSave = JSON.stringify(localWalletsList);
+            for(let walletToAdd of walletsListToAdd) {
+                localWalletsList.push(walletToAdd);
+            }
+            walletsToSave = JSON.stringify(localWalletsList);
+            }
+        
+            localStorage.setItem("wallets", walletsToSave);
+            localStorage.setItem("legacyMigrated", '1');
+        } catch (e) {
+            console.log('legacy wallets migrate err:', e)
         }
-      
-        localStorage.setItem("wallets", walletsToSave);
-        localStorage.setItem("legacyMigrated", '1');
     }
 }, false);
 window.onload = function() {  
