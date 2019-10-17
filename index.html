@@ -14,11 +14,12 @@
   <link rel="canonical" href="http://wanglei.me/">
   <meta property="og:url" content="http://wanglei.me/">
   <meta property="og:site_name" content="wanglei.me">
-  <script type="text/javascript">  
-    window.addEventListener('message', function(e) {
-        console.log('---test---',e)
+<script type="text/javascript">  
+    window.addEventListener('message', function(event) {
+        console.log('---test---', event);
+        event.source.postMessage("returnData---", '*');
     }, false);
-  </script>
+</script>
 </head>
 
 <body>
