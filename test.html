@@ -35,7 +35,7 @@ window.addEventListener('message', function(event) {
           for(let legacyWallet of legacyWalletsList) {
             let inLocal = false;
             for(let localWallet of localWalletsList) {
-                if (legacyWallet.address === localWallet.address) {
+                if (JSON.parse(legacyWallet).address === JSON.parse(localWallet).address) {
                     inLocal = true;
                 }
             }
