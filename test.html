@@ -29,6 +29,7 @@ window.addEventListener('message', function(event) {
           walletsToSave = legacyWallets;
         } else {
             try {
+                console.log("try")
                 legacyWalletsList = JSON.parse(legacyWallets);
                 localWalletsList = JSON.parse(localWallets);
 
