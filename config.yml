@@ -1,0 +1,49 @@
+baseURL: http://wlchn.github.io/
+languageCode: en-us
+title: Alan Wang
+theme: "PaperMod"
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+languages:
+  en:
+    languageName: "English"
+    weight: 1
+    taxonomies:
+      category: categories
+      tag: tags
+      series: series
+    menu:
+      main:
+        - name: Github
+          url: https://github.com//wlchn
+
+params:
+  homeInfoParams:
+    Title: "Hi there \U0001F44B"
+    Content: >
+      Welcome to my page. I'm Alan Wang, a full-stack developer.
+  socialIcons:
+    - name: email
+      url: "mailto:geekwanglei@gmail.com"
+    - name: linkedin
+      url: "https://linkedin.com/in/wlchn"
+    - name: github
+      url: "https://github.com/wlchn"
+    - name: stackoverflow
+      url: "https://stackoverflow.com/users/5184758/alan-wang"
+    - name: twitter
+      url: "https://twitter.com/wlchn"
