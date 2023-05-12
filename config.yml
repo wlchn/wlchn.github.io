@@ -35,7 +35,7 @@ params:
   homeInfoParams:
     Title: "Hi there \U0001F44B"
     Content: >
-      Welcome to my page. I'm Alan Wang, a full-stack developer.
+      I'm Alan Wang, a full-stack developer.
   socialIcons:
     - name: email
       url: "mailto:geekwanglei@gmail.com"
