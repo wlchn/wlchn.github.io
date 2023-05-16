@@ -28,8 +28,15 @@ languages:
       series: series
     menu:
       main:
+        - name: Archives
+          url: /archives
+          weight: 1
+        - name: Search
+          url: /search
+          weight: 2
         - name: Github
-          url: https://github.com//wlchn
+          url: https://github.com/wlchn
+          weight: 3
 
 params:
   homeInfoParams:
