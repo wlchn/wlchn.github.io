@@ -1,6 +1,6 @@
 baseURL: http://wlchn.github.io/
 languageCode: en-us
-title: Alan Wang
+title: Lei Wang
 theme: "PaperMod"
 
 enableRobotsTXT: true
@@ -42,7 +42,7 @@ params:
   homeInfoParams:
     Title: "Hi there \U0001F44B"
     Content: >
-      I'm Alan Wang, a full-stack developer.
+      I'm Lei Wang, a full-stack developer.
   socialIcons:
     - name: email
       url: "mailto:geekwanglei@gmail.com"
@@ -51,6 +51,6 @@ params:
     - name: github
       url: "https://github.com/wlchn"
     - name: stackoverflow
-      url: "https://stackoverflow.com/users/5184758/alan-wang"
+      url: "https://stackoverflow.com/users/5184758/lei-wang"
     - name: twitter
       url: "https://twitter.com/wlchn"
