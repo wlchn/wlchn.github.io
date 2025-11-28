@@ -46,11 +46,7 @@ params:
   socialIcons:
     - name: email
       url: "mailto:geekwanglei@gmail.com"
-    # - name: linkedin
-    #  url: "https://linkedin.com/in/wlchn"
     - name: github
       url: "https://github.com/wlchn"
-    - name: stackoverflow
-      url: "https://stackoverflow.com/users/5184758/lei-wang"
-    - name: twitter
-      url: "https://twitter.com/wlchn"
+    - name: X
+      url: "https://x.com/wlchn"
