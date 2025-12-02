@@ -1,7 +1,8 @@
 baseURL: http://wlchn.github.io/
 languageCode: en-us
 title: Lei Wang
-theme: PaperMod
+theme: "PaperMod"
+
 enableRobotsTXT: true
 buildDrafts: false
 buildFuture: false
@@ -44,7 +45,7 @@ params:
       I'm Lei Wang, a full-stack developer.
   socialIcons:
     - name: email
-      url: "mailto:*********************"
+      url: "mailto:geekwanglei@gmail.com"
     - name: github
       url: "https://github.com/wlchn"
     - name: X
