@@ -42,8 +42,6 @@ jobs:
         run: sudo snap install dart-sass-embedded
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
@@ -60,7 +58,6 @@ jobs:
             --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
-        with:
           path: ./public
 
   # Deployment job
