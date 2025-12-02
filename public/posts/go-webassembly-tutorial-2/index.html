@@ -1,0 +1,132 @@
+<!doctype html><html lang=en dir=auto data-theme=auto><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="noindex, nofollow"><title>Go-WebAssembly-入门（二） | Lei Wang</title><meta name=keywords content><meta name=description content='系列文章 Go WebAssembly 入门（一）
+Getting Started
+编写 main.go
+package main
+
+import (
+  "strconv"
+  "syscall/js"
+)
+// 传入value1, value2, result三个元素的id，将value1+value2结果赋给result元素
+func add(ids []js.Value) {
+  // 根据id获取输入值
+  value1 := js.Global().Get("document").Call("getElementById", ids[0].String()).Get("value").String()
+  value2 := js.Global().Get("document").Call("getElementById", ids[1].String()).Get("value").String()
+
+  int1, _ := strconv.Atoi(value1)
+  int2, _ := strconv.Atoi(value2)
+  // 将相加结果set给result元素
+  js.Global().Get("document").Call("getElementById", ids[2].String()).Set("value", int1+int2)
+}
+
+// 添加监听事件
+func registerCallbacks() {
+  js.Global().Set("add", js.NewCallback(add))
+}
+
+func main() {
+  c := make(chan struct{}, 0)
+  println("Go WebAssembly Initialized!")
+  registerCallbacks()
+
+  <-c
+}
+将 main.go 编译成 lib.wasm
+GOOS=js GOARCH=wasm go build -o lib.wasm main.go
+在 index.html 中调用 lib.wasm
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="wasm_exec.js"></script>
+    <script>
+      if (!WebAssembly.instantiateStreaming) { // polyfill
+        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+          const source = await (await resp).arrayBuffer();
+          return await WebAssembly.instantiate(source, importObject);
+        };
+      }
+
+      const go = new Go();
+      let mod, inst;
+      WebAssembly.instantiateStreaming(fetch("lib.wasm"), go.importObject).then(async (result) => {
+        mod = result.module;
+        inst = result.instance;
+        await go.run(inst)
+      });
+    </script>
+  </head>
+  <body>
+    <input type="text" id="value1"/>
+    <input type="text" id="value2"/>
+    <button type="button" id="add" onClick="add(&#39;value1&#39;, &#39;value2&#39;, &#39;result&#39;);">add</button>
+    <input type="text" id="result"/>
+  </body>
+</html>
+打开 server，在浏览器打开即可调用 WebAssembly 二进制文件执行。'><meta name=author content><link rel=canonical href=http://localhost:1313/posts/go-webassembly-tutorial-2/><link crossorigin=anonymous href=/assets/css/stylesheet.343cc480b9ffc8f04ccbe5e968ad674880cab773ec19905e93033065c1e7a804.css integrity="sha256-NDzEgLn/yPBMy+XpaK1nSIDKt3PsGZBekwMwZcHnqAQ=" rel="preload stylesheet" as=style><link rel=icon href=http://localhost:1313/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://localhost:1313/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://localhost:1313/favicon-32x32.png><link rel=apple-touch-icon href=http://localhost:1313/apple-touch-icon.png><link rel=mask-icon href=http://localhost:1313/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://localhost:1313/posts/go-webassembly-tutorial-2/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}@media(prefers-color-scheme:light){.list::-webkit-scrollbar-thumb{border-color:var(--code-bg)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script></head><body id=top><header class=header><nav class=nav><div class=logo><a href=http://localhost:1313/ accesskey=h title="Lei Wang (Alt + H)">Lei Wang</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=http://localhost:1313/archives title=Archives><span>Archives</span></a></li><li><a href=http://localhost:1313/search title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=https://github.com/wlchn title=Github><span>Github</span>&nbsp;
+<svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">Go-WebAssembly-入门（二）</h1><div class=post-meta><span title='2019-02-02 01:00:00 +0800 CST'>February 2, 2019</span></div></header><div class=post-content><p>系列文章 <a href=https://www.jianshu.com/p/b3ef3be94fa7>Go WebAssembly 入门（一）</a></p><h2 id=getting-started>Getting Started<a hidden class=anchor aria-hidden=true href=#getting-started>#</a></h2><p>编写 main.go</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;strconv&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#e6db74>&#34;syscall/js&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span><span style=color:#75715e>// 传入value1, value2, result三个元素的id，将value1+value2结果赋给result元素</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>add</span>(<span style=color:#a6e22e>ids</span> []<span style=color:#a6e22e>js</span>.<span style=color:#a6e22e>Value</span>) {
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 根据id获取输入值</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>value1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>js</span>.<span style=color:#a6e22e>Global</span>().<span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;document&#34;</span>).<span style=color:#a6e22e>Call</span>(<span style=color:#e6db74>&#34;getElementById&#34;</span>, <span style=color:#a6e22e>ids</span>[<span style=color:#ae81ff>0</span>].<span style=color:#a6e22e>String</span>()).<span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;value&#34;</span>).<span style=color:#a6e22e>String</span>()
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>value2</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>js</span>.<span style=color:#a6e22e>Global</span>().<span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;document&#34;</span>).<span style=color:#a6e22e>Call</span>(<span style=color:#e6db74>&#34;getElementById&#34;</span>, <span style=color:#a6e22e>ids</span>[<span style=color:#ae81ff>1</span>].<span style=color:#a6e22e>String</span>()).<span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;value&#34;</span>).<span style=color:#a6e22e>String</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>int1</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>strconv</span>.<span style=color:#a6e22e>Atoi</span>(<span style=color:#a6e22e>value1</span>)
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>int2</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>strconv</span>.<span style=color:#a6e22e>Atoi</span>(<span style=color:#a6e22e>value2</span>)
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 将相加结果set给result元素</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>js</span>.<span style=color:#a6e22e>Global</span>().<span style=color:#a6e22e>Get</span>(<span style=color:#e6db74>&#34;document&#34;</span>).<span style=color:#a6e22e>Call</span>(<span style=color:#e6db74>&#34;getElementById&#34;</span>, <span style=color:#a6e22e>ids</span>[<span style=color:#ae81ff>2</span>].<span style=color:#a6e22e>String</span>()).<span style=color:#a6e22e>Set</span>(<span style=color:#e6db74>&#34;value&#34;</span>, <span style=color:#a6e22e>int1</span><span style=color:#f92672>+</span><span style=color:#a6e22e>int2</span>)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 添加监听事件</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>registerCallbacks</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>js</span>.<span style=color:#a6e22e>Global</span>().<span style=color:#a6e22e>Set</span>(<span style=color:#e6db74>&#34;add&#34;</span>, <span style=color:#a6e22e>js</span>.<span style=color:#a6e22e>NewCallback</span>(<span style=color:#a6e22e>add</span>))
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>c</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>struct</span>{}, <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>  println(<span style=color:#e6db74>&#34;Go WebAssembly Initialized!&#34;</span>)
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>registerCallbacks</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>c</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>将 main.go 编译成 lib.wasm</p><pre tabindex=0><code>GOOS=js GOARCH=wasm go build -o lib.wasm main.go
+</code></pre><p>在 index.html 中调用 lib.wasm</p><pre tabindex=0><code>&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&#34;utf-8&#34;&gt;
+    &lt;script src=&#34;wasm_exec.js&#34;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      if (!WebAssembly.instantiateStreaming) { // polyfill
+        WebAssembly.instantiateStreaming = async (resp, importObject) =&gt; {
+          const source = await (await resp).arrayBuffer();
+          return await WebAssembly.instantiate(source, importObject);
+        };
+      }
+
+      const go = new Go();
+      let mod, inst;
+      WebAssembly.instantiateStreaming(fetch(&#34;lib.wasm&#34;), go.importObject).then(async (result) =&gt; {
+        mod = result.module;
+        inst = result.instance;
+        await go.run(inst)
+      });
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;input type=&#34;text&#34; id=&#34;value1&#34;/&gt;
+    &lt;input type=&#34;text&#34; id=&#34;value2&#34;/&gt;
+    &lt;button type=&#34;button&#34; id=&#34;add&#34; onClick=&#34;add(&#39;value1&#39;, &#39;value2&#39;, &#39;result&#39;);&#34;&gt;add&lt;/button&gt;
+    &lt;input type=&#34;text&#34; id=&#34;result&#34;/&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>打开 server，在浏览器打开即可调用 WebAssembly 二进制文件执行。</p><pre tabindex=0><code>go run server.go
+</code></pre><h2 id=示例代码-github>示例代码 GitHub<a hidden class=anchor aria-hidden=true href=#示例代码-github>#</a></h2><ul><li><a href=https://github.com/wlchn/go-webassembly>https://github.com/wlchn/go-webassembly</a></li></ul><h2 id=reference>reference<a hidden class=anchor aria-hidden=true href=#reference>#</a></h2><ul><li><a href=https://tutorialedge.net/golang/go-webassembly-tutorial/>https://tutorialedge.net/golang/go-webassembly-tutorial/</a></li></ul></div><footer class=post-footer><ul class=post-tags></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=http://localhost:1313/>Lei Wang</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>

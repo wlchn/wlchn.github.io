@@ -1,0 +1,66 @@
+<!doctype html><html lang=en dir=auto data-theme=auto><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="noindex, nofollow"><title>不同域名之间共享localStorage-sessionStorage | Lei Wang</title><meta name=keywords content><meta name=description content="问题
+两个不同的域名的 localStorage 不能直接互相访问。那么如何在aaa.com中如何调用bbb.com的 localStorage?
+实现原理
+1.在aaa.com的页面中，在页面中嵌入一个 src 为bbb.com的iframe，此时这个iframe里可以调用bbb.com的 localStorage。 2.用postMessage方法实现页面与iframe之间的通信。
+综合 1、2 便可以实现aaa.com中调用bbb.com的 localStorage。
+优化 iframe
+我们可以在bbb.com中写一个专门负责共享 localStorage 的页面，例如叫做page1.html，这样可以防止无用的资源加载到iframe中。
+示例
+以在aaa.com中读取bbb.com中的 localStorage 的item1为例，写同理：
+bbb.com中page1.html，监听aaa.com通过postMessage传来的信息，读取 localStorage，然后再使用postMessage方法传给aaa.com的接收者。
+<!DOCTYPE html>
+<html lang=&#34;en-US&#34;>
+<head>
+<script type=&#34;text/javascript&#34;>
+    window.addEventListener('message', function(event) {
+        if (event.origin === 'https://aaa.com') {
+          const { key } = event.data;
+          const value = localStorage.getItem(key);
+          event.source.postMessage({wallets: wallets}, event.origin);
+        }
+    }, false);
+</script>
+</head>
+<body>
+  This page is for sharing localstorage.
+</body>
+</html>
+在aaa.com的页面中加入一个 src 为bbb.com/page1.html隐藏的iframe。"><meta name=author content><link rel=canonical href=http://localhost:1313/posts/share-localstorage-sessionstorage/><link crossorigin=anonymous href=/assets/css/stylesheet.343cc480b9ffc8f04ccbe5e968ad674880cab773ec19905e93033065c1e7a804.css integrity="sha256-NDzEgLn/yPBMy+XpaK1nSIDKt3PsGZBekwMwZcHnqAQ=" rel="preload stylesheet" as=style><link rel=icon href=http://localhost:1313/favicon.ico><link rel=icon type=image/png sizes=16x16 href=http://localhost:1313/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=http://localhost:1313/favicon-32x32.png><link rel=apple-touch-icon href=http://localhost:1313/apple-touch-icon.png><link rel=mask-icon href=http://localhost:1313/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=http://localhost:1313/posts/share-localstorage-sessionstorage/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}@media(prefers-color-scheme:light){.list::-webkit-scrollbar-thumb{border-color:var(--code-bg)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script></head><body id=top><header class=header><nav class=nav><div class=logo><a href=http://localhost:1313/ accesskey=h title="Lei Wang (Alt + H)">Lei Wang</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=http://localhost:1313/archives title=Archives><span>Archives</span></a></li><li><a href=http://localhost:1313/search title="Search (Alt + /)" accesskey=/><span>Search</span></a></li><li><a href=https://github.com/wlchn title=Github><span>Github</span>&nbsp;
+<svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><h1 class="post-title entry-hint-parent">不同域名之间共享localStorage-sessionStorage</h1><div class=post-meta><span title='2019-10-17 00:00:00 +0800 CST'>October 17, 2019</span></div></header><div class=post-content><h3 id=问题>问题<a hidden class=anchor aria-hidden=true href=#问题>#</a></h3><p>两个不同的域名的 localStorage 不能直接互相访问。那么如何在<code>aaa.com</code>中如何调用<code>bbb.com</code>的 localStorage?</p><h3 id=实现原理>实现原理<a hidden class=anchor aria-hidden=true href=#实现原理>#</a></h3><p>1.在<code>aaa.com</code>的页面中，在页面中嵌入一个 src 为<code>bbb.com</code>的<code>iframe</code>，此时这个<code>iframe</code>里可以调用<code>bbb.com</code>的 localStorage。 2.用<code>postMessage</code>方法实现页面与<code>iframe</code>之间的通信。
+综合 1、2 便可以实现<code>aaa.com</code>中调用<code>bbb.com</code>的 localStorage。</p><h3 id=优化-iframe>优化 iframe<a hidden class=anchor aria-hidden=true href=#优化-iframe>#</a></h3><p>我们可以在<code>bbb.com</code>中写一个专门负责共享 localStorage 的页面，例如叫做<code>page1.html</code>，这样可以防止无用的资源加载到<code>iframe</code>中。</p><h3 id=示例>示例<a hidden class=anchor aria-hidden=true href=#示例>#</a></h3><p>以在<code>aaa.com</code>中读取<code>bbb.com</code>中的 localStorage 的<code>item1</code>为例，写同理：
+<code>bbb.com</code>中<code>page1.html</code>，监听<code>aaa.com</code>通过<code>postMessage</code>传来的信息，读取 localStorage，然后再使用<code>postMessage</code>方法传给<code>aaa.com</code>的接收者。</p><pre tabindex=0><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&#34;en-US&#34;&gt;
+&lt;head&gt;
+&lt;script type=&#34;text/javascript&#34;&gt;
+    window.addEventListener(&#39;message&#39;, function(event) {
+        if (event.origin === &#39;https://aaa.com&#39;) {
+          const { key } = event.data;
+          const value = localStorage.getItem(key);
+          event.source.postMessage({wallets: wallets}, event.origin);
+        }
+    }, false);
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  This page is for sharing localstorage.
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>在<code>aaa.com</code>的页面中加入一个 src 为<code>bbb.com/page1.html</code>隐藏的<code>iframe</code>。</p><pre tabindex=0><code>&lt;iframe id=&#34;bbb-iframe&#34; src=&#34;https://bbb.com/page1.html&#34; style=&#34;display:none;&#34;&gt;&lt;/iframe&gt;
+</code></pre><p>在<code>aaa.com</code>的页面中加入下面 script 标签。在页面加载完毕时通过<code>postMessage</code>告诉<code>iframe</code>中监听者，读取<code>item1</code>。监听<code>bbb.com</code>传回的<code>item1</code>的值并输出。</p><pre tabindex=0><code>&lt;script type=&#34;text/javascript&#34;&gt;
+  window.onload = function() {
+      const bbbIframe = document.getElementById(&#39;bbb-iframe&#39;);
+      bbbIframe.contentWindow.postMessage({key: &#39;item1&#39;}, &#39;https://bbb.com&#39;);
+  }
+  window.addEventListener(&#39;message&#39;, function(event) {
+      if (event.origin === &#39;https://bbb.com&#39;) {
+          console.log(event.data);
+      }
+  }, false);
+&lt;/script&gt;
+</code></pre></div><footer class=post-footer><ul class=post-tags></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=http://localhost:1313/>Lei Wang</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script></body></html>
