@@ -1,4 +1,4 @@
 # wlchn.github.io
 
-- Built with Hugo & PaperMod theme
+- Build with Hugo & PaperMod
 - Deployment: GitHub Pages & Github Actions
