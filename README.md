@@ -2,4 +2,4 @@
 
 - Built with Hugo
 - PaperMod theme
-- GitHub Pages deployment
+- Deployment: GitHub Pages & Github Actions
