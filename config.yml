@@ -34,7 +34,7 @@ languages:
           url: /search
           weight: 2
         - name: Github
-          url: https://github.com/wlchn
+          url: https://github.com/wlchn/wlchn.github.io
           weight: 3
 
 params:
