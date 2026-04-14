@@ -1,7 +1,7 @@
 <div class="social-icons" {{ with .align}}align="{{.}}" {{- end }}>
     {{- range site.Params.socialIcons }}
     {{- if eq .name "email" }}
-    <a href="javascript:void(0)" onclick="decodeAndShowEmail('{{ .url }}')" target="_blank" rel="noopener noreferrer me"
+    <a href="javascript:void(0)" onclick="decodeAndShowEmail('{{ .url }}')" rel="noopener noreferrer me"
         title="{{ (.title | default .name) | title }}">
         {{ partial "svg.html" . }}
     </a>
