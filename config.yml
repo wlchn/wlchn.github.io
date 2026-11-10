@@ -1,5 +1,5 @@
 baseURL: http://wlchn.github.io/
-languageCode: en-us
+locale: en-us
 title: Lei Wang
 theme: PaperMod
 enableRobotsTXT: true
@@ -19,7 +19,7 @@ outputs:
 
 languages:
   en:
-    languageName: "English"
+    label: "English"
     weight: 1
     taxonomies:
       category: categories
